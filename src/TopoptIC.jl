@@ -28,7 +28,6 @@ module TopoptIC
     include("finitos/conversor.jl")
     
     # Filtragem e projeção
-    include("filtro/centroides.jl")
     include("filtro/vizinhanca.jl")
     include("filtro/filtro.jl")
     include("filtro/mapeamento.jl")
