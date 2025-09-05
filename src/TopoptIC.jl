@@ -16,7 +16,7 @@ module TopoptIC
     include("heaviside.jl")
     
     # Derivada do λ
-    include("adjunto.jl") 
+    include("adjunto/adjunto.jl") 
 
     # finitos
     include("finitos/material.jl")
