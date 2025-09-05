@@ -7,6 +7,7 @@ module TopoptIC
     using Statistics
     using StaticArrays
     using Lgmsh
+    using Gmsh
     using WallE
     using ProgressMeter
 

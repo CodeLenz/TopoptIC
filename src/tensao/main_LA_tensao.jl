@@ -6,8 +6,37 @@
 #
 function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
+
+    # Se o arquivo for um .geo, geramos um .msh utilizando a biblioteca
+    # do gmsh
+    if occursin(".geo",arquivo)
+       
+       # Gera a malha
+       gmsh.initialize()
+       gmsh.open(arquivo)
+       gmsh.model.mesh.generate(2)
+       
+       # Cria o mesmo nome, mas com .msh
+       mshfile = replace(arquivo,".geo"=>".msh")
+
+       # Cria o .msh
+       gmsh.write(mshfile)
+      
+    else 
+
+       # Assumimos que já passaram o .msh (seria bom testar...)
+       mshfile = arquivo
+
+    end
+
+    # Nome do arquivo .pos (sem o diretório)
+    # Recupera o nome do arquivo sem caminho
+    nome_msh = basename(mshfile)
+    nomepos  = replace(arquivo,".msh"=>".pos")
+
+
     # Entrada de dados
-    nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes = ConversorFEM1(arquivo)
+    nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes = ConversorFEM1(mshfile)
 
     # Calcula os centróides dos elementos 
     centroides = Centroides(ne,IJ,XY)	
@@ -51,7 +80,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
     A = [Area_elemento(e,IJ,XY) for e=1:ne]
     
     # Visualização dos resultados
-    Lgmsh_export_init("saida.pos",nn,ne,XY,etypes,IJ) 
+    Lgmsh_export_init(nomepos,nn,ne,XY,etypes,IJ) 
 
     ###########################################################
     # ------------- COMEÇO DA MODIFICAÇÃO DO LA ---------------
@@ -134,7 +163,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
         ρ = Mapeamento(x,MF,β,η,ρ_min)
 
         # Visualização das densidades
-        Lgmsh_export_element_scalar("saida.pos",ρ,"ρ $k")
+        Lgmsh_export_element_scalar(nomepos,ρ,"ρ $k")
 
         # Atualiza a penalização 
         r = r*1.1  
