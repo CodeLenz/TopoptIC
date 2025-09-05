@@ -49,6 +49,8 @@ function Driver_tensao(x::Vector,r::Float64,μ::Vector,
         return volume
     end
 
+   # @show volume, norm(ρ)
+
     # Calcula as restrições de tensão 
     g = zeros(ne)
 
@@ -84,6 +86,9 @@ function Driver_tensao(x::Vector,r::Float64,μ::Vector,
     # Com essas informações, podemos calcular o LA
     LA1 = volume/VALS[1] 
     LA2 = (r/(2*ne))*sum(Heaviside.(μ/r .+ g).^2)
+
+    #@show LA2 
+
     LA = LA1 + LA2
 
     # Se o usuário quer o valor do LA 

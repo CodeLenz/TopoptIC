@@ -32,7 +32,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
     # Nome do arquivo .pos (sem o diretório)
     # Recupera o nome do arquivo sem caminho
     nome_msh = basename(mshfile)
-    nomepos  = replace(arquivo,".msh"=>".pos")
+    nomepos  = replace(nome_msh,".msh"=>".pos")
 
 
     # Entrada de dados
@@ -85,7 +85,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
     # Definições para o LA
     μ = zeros(ne)
-    r = 1.0
+    r = 0.01
  
     # Vetor de normalização do objetivo
     VALS = [0.0]
@@ -107,6 +107,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
     # Restrições laterais
     ci = zeros(ne)
     cs = ones(ne)                           
+
 
     #
     # Verificação de derivada
