@@ -1,0 +1,4 @@
+name = "TopoptIC"
+uuid = "a7038f91-54b0-4e0b-98b8-b68743c05a42"
+authors = ["Eduardo Lenz <eduardobarplenz@gmail.com>"]
+version = "0.1.0"

@@ -1,2 +1,3 @@
 # TopoptIC
-Código de Otimização Topológica dos ICs 2025
+
+[![Build Status](https://github.com/CodeLenz/TopoptIC.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/CodeLenz/TopoptIC.jl/actions/workflows/CI.yml?query=branch%3Amaster)
