@@ -67,7 +67,7 @@ function ConversorFEM1(arquivo,esp=15E-3)
     na = malha.nap
     AP = malha.AP
 
-    # Retorna como estava em Dados()
-    return nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes
+    # Retorna os dados processados para o programa principal
+    return nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes,malha.centroids
 
 end

@@ -36,10 +36,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
 
     # Entrada de dados
-    nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes = ConversorFEM1(mshfile)
-
-    # Calcula os centróides dos elementos 
-    centroides = Centroides(ne,IJ,XY)	
+    nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes,centroides = ConversorFEM1(mshfile)
 
     # Determina a vizinhança de cada elemento da malha
 	vizinhos,pesos = Vizinhanca(ne,centroides,R)
@@ -88,7 +85,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
     # Definições para o LA
     μ = zeros(ne)
-    r = 10.0
+    r = 1.0
  
     # Vetor de normalização do objetivo
     VALS = [0.0]
@@ -106,6 +103,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
     g(x) = Driver_tensao(x,r,μ,MF,β,η,ρ_min,nn,ne,MAT,ESP,XY,IJ,expP,expQ,
                               nf,FC,np,P,na,AP,A,σY,VALS,"g")
    
+
     # Restrições laterais
     ci = zeros(ne)
     cs = ones(ne)                           
