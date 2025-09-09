@@ -44,7 +44,7 @@ function Driver_tensao(x::Vector,r::Float64,μ::Vector,
     # Calcula o volume atual da estrutura V(ρ(x))
     volume = dot(ρ,A)
 
-    # Se o usuário quer só ver o valor da compliance
+    # Se o usuário quer só ver o valor do volume 
     if opcao=="volume"
         return volume
     end

@@ -34,9 +34,11 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
     nome_msh = basename(mshfile)
     nomepos  = replace(nome_msh,".msh"=>".pos")
 
-
     # Entrada de dados
     nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes,centroides = ConversorFEM1(mshfile)
+
+    # Lista de elementos para desconsiderar nas restrições de tensão
+    elementos_desconsiderar = [425,226,427,428,1457,1458,14]
 
     # Determina a vizinhança de cada elemento da malha
 	vizinhos,pesos = Vizinhanca(ne,centroides,R)
@@ -59,7 +61,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
     expP = 3.0
 
     # Define o expoente da parametrização QP
-    expQ = 1.5
+    expQ = 2.5
 
     # Tensão de escoamento 
     σY = 30E6
@@ -85,7 +87,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
     # Definições para o LA
     μ = zeros(ne)
-    r = 10.0
+    r = 1.0
  
     # Vetor de normalização do objetivo
     VALS = [0.0]
@@ -142,7 +144,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
         # Chama o otimizador interno
         options = WallE.Init()
-        options["NITER"] = 100
+        options["NITER"] = 200
         output = WallE.Solve(LA,dLA,x,ci,cs,options)
 
         # Recupera a solução
@@ -164,11 +166,14 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
         # Visualização das densidades
         Lgmsh_export_element_scalar(nomepos,ρ,"ρ $k")
 
+        # Calcula as restrições de tensão
+        gs = g(x)
+
+        # Visualização das restrições de tensão
+        Lgmsh_export_element_scalar(nomepos,gs,"gσ $k")
+        
         # Atualiza a penalização 
         r = r*1.1  
-
-        # Calcula as restrições no novo ponto
-        gs = g(x)
 
         # Atualiza a estimativa de μ
         μ = r.*Heaviside.(μ/r .+ gs)
