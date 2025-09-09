@@ -6,6 +6,8 @@
 #
 function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
+    # Nova variável
+    variavel = 3
 
     # Se o arquivo for um .geo, geramos um .msh utilizando a biblioteca
     # do gmsh
@@ -36,9 +38,6 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
     # Entrada de dados
     nn,XY,ne,IJ,MAT,ESP,nf,FC,np,P,na,AP,nfb,FB,etypes,centroides = ConversorFEM1(mshfile)
-
-    # Lista de elementos para desconsiderar nas restrições de tensão
-    elementos_desconsiderar = [425,226,427,428,1457,1458,14]
 
     # Determina a vizinhança de cada elemento da malha
 	vizinhos,pesos = Vizinhanca(ne,centroides,R)
