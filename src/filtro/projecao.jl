@@ -1,7 +1,7 @@
 #
 # Projeção Heaviside
 #
-function Projecao(a,β,η)
+function Projecao(a::Vector,β,η)
   
     # Cria vetor de saída
     b = similar(a)
@@ -29,7 +29,7 @@ end
 #
 # Correção da derivada da projeção
 #
-function dProjecao(a,β,η)
+function dProjecao(a::Vector,β,η)
   
     # Cria vetor de saída
     db = similar(a)

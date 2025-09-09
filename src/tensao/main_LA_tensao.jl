@@ -65,7 +65,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
     σY = 30E6
 
     # Fator de ajuste da projeção Heaviside
-    β = 1.0
+    β = 5.0
 
     # Centro do Heaviside
     η = 0.5
@@ -85,7 +85,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
     # Definições para o LA
     μ = zeros(ne)
-    r = 0.01
+    r = 10.0
  
     # Vetor de normalização do objetivo
     VALS = [0.0]
@@ -142,7 +142,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
 
         # Chama o otimizador interno
         options = WallE.Init()
-        options["NITER"] = 1000
+        options["NITER"] = 100
         output = WallE.Solve(LA,dLA,x,ci,cs,options)
 
         # Recupera a solução

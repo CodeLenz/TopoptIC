@@ -28,10 +28,10 @@ function Driver_tensao(x::Vector,r::Float64,μ::Vector,
     Fc = ForcaCglobal(nn,nf,FC)
 
     # Vetor de forças distribuídas global
-    Fb = ForcatGlobal(nn,ESP,XY,IJ,np,P)
+    Ft = ForcatGlobal(nn,ESP,XY,IJ,np,P)
 
     # Força total 
-    F = Fc .+ Fb
+    F = Fc .+ Ft
 
     # Aplica CCH na força
     AplicaCCH_F!(na,AP,F) 

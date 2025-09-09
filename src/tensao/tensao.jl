@@ -1,7 +1,7 @@
 #
 # Parametrização da tensão
 #
-function fσ(ρe, expP=3.0, expQ=2.5)
+function fσ(ρe, expP, expQ)
 
     ρe^(expP-expQ)
 
@@ -10,7 +10,7 @@ end
 #
 # Derivada da parametrização da tensão em relação a ρ
 #
-function dfσ(ρe, expP=3.0, expQ=2.5)
+function dfσ(ρe, expP, expQ)
 
     (expP-expQ)*ρe^(expP-expQ-1)
 
