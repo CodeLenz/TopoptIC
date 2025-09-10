@@ -161,7 +161,7 @@ function Derivada_tensao(ne,MAT,IJ,XY,U,ρ,μ,r,σY,expP,expQ)
         bracket = Heaviside(μ[m]/r + g)
 
         # Monta o termo de ∂D[m]
-        ∂D[m] = (r/ne)*bracket*(1/(σY*σeq))*transpose(σ)*V*(dρσ*σ0)
+        ∂D[m] = (r)*bracket*(1/(σY*σeq))*transpose(σ)*V*(dρσ*σ0)
 
         # Contribuição para o vetor Fλ
         fm = bracket*(1/(σY*σeq))*transpose(σ)*V*ρσ*Cv*B
@@ -172,6 +172,6 @@ function Derivada_tensao(ne,MAT,IJ,XY,U,ρ,μ,r,σY,expP,expQ)
     end #m
 
     # Devolve os vetores 
-    return -(r/ne)*Fλ, ∂D
+    return -(r)*Fλ, ∂D
 
 end
