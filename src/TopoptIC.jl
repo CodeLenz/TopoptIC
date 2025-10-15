@@ -10,6 +10,7 @@ module TopoptIC
     using Gmsh
     using WallE
     using ProgressMeter
+    using NLopt
 
     #
     # Carrega as rotinas

@@ -109,6 +109,12 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
                               nf,FC,np,P,na,AP,A,σY,VALS,"g")
    
 
+    # Driver para o NLopt
+    function LANLopt!(x,dx)
+        dx .= dLA(x)
+        return LA(x)
+    end 
+
     # Restrições laterais
     ci = zeros(ne)
     cs = ones(ne)                           
@@ -146,6 +152,7 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
         println("Iteração ", k)
 
         # Chama o otimizador interno
+        #=
         options = WallE.Init()
         options["NITER"] = 500
         output = WallE.Solve(LA,dLA,x,ci,cs,options)
@@ -154,6 +161,21 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
         xn .= output["RESULT"]
         flag_converged = output["CONVERGED"]
         opt_norm = output["NORM"]
+        =#
+        opt = NLopt.Opt(:LD_MMA, ne)
+        NLopt.lower_bounds!(opt, ci)
+        NLopt.upper_bounds!(opt, cs)
+        #NLopt.xtol_rel!(opt, 1e-4)
+        NLopt.min_objective!(opt, LANLopt!)
+        min_f, xn, ret = NLopt.optimize(opt, x)
+        num_evals = NLopt.numevals(opt)
+        println(
+            """
+            objective value       : $min_f
+            solution status       : $ret
+            function evaluation : $num_evals
+            """
+        )
 
         # Variação das variáveis de projeto 
         dx = norm(xn.-x,Inf)
@@ -182,9 +204,9 @@ function MinVolσ(arquivo,R=0.15; verifica_derivada=false)
         μ = r.*Heaviside.(μ/r .+ gs)
 
         println("Resumo")
-        @show gs[gs.>0]
-        @show r
-        @show μ[μ.>0]
+        #@show gs[gs.>0]
+        #@show r
+        #@show μ[μ.>0]
 
 
     end # iter

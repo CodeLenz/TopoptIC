@@ -45,16 +45,18 @@ Line(10) = {7, 5};
 
 
 // Divisões usando transfinito
-Transfinite Line {1} = 40;
-Transfinite Line {2} = 10;
-Transfinite Line {3} = 40;
-Transfinite Line {4} = 10;
-Transfinite Line {5} = 10;
-Transfinite Line {6} = 40;
-Transfinite Line {7} = 10;
-Transfinite Line {8} = 10;
-Transfinite Line {9} = 40;
-Transfinite Line {10} = 10;
+nx = 10;
+ny = 3;
+Transfinite Line {1} = nx;
+Transfinite Line {2} = ny;
+Transfinite Line {3} = nx;
+Transfinite Line {4} = ny;
+Transfinite Line {5} = ny;
+Transfinite Line {6} = nx;
+Transfinite Line {7} = ny;
+Transfinite Line {8} = ny;
+Transfinite Line {9} = nx;
+Transfinite Line {10} = ny;
 
 // Agora define as superfícies
 // Superfícies
@@ -118,9 +120,6 @@ Mesh.RecombineAll = 1;
 //    Combines the Blossom approach with the goal of generating a fully quadrilateral mesh. 
 Mesh.RecombinationAlgorithm = 2;
 
-// Tamanho da malha
-Mesh.CharacteristicLengthFactor = lc;
-
 // Cria a malha
 Mesh 2;
 
@@ -129,4 +128,4 @@ Mesh 2;
 // OptimizeMesh "Gmsh";
 
 // Grava a malha
-Save "8x5-distrib-meio.msh";
+Save "8x5-distrib-meio_transfinite.msh";
