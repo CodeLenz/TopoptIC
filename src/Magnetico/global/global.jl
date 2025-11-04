@@ -29,15 +29,15 @@ function Monta_K(ne,coord,connect,materials)
 
         #=
         if et==3
-           Ke, Me = KMe_bi4(iρ,iκ,X)
+           Ke = KMe_bi4(μ,X)
         elseif et==2
-           Ke, Me = KMe_tri3(iρ,iκ,X)
+           Ke = KMe_tri3(μ,X)
         elseif et==4
-            Ke, Me = KMe_tet4(iρ,iκ,X)   
+            Ke = KMe_tet4(μ,X)
         elseif et==5
-           Ke, Me = KMe_hex8(iρ,iκ,X)
+           Ke = KMe_hex8(μ,X)
         elseif et==7
-            Ke, Me = KMe_pyr5(iρ,iκ,X)    
+            Ke = KMe_pyr5(μ,X)
         else
             error("Elemento não definido")
         end
