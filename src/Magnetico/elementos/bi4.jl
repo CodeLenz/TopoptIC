@@ -124,6 +124,53 @@ function Ke_bi4(μ,X)
   
 end
 
+#
+# Vetor de forças de corpo para o bi4
+#
+function Body_load_local_bi4(ρm,X)
+
+    # Aloca o vetor 4 × 1
+    Fe = zeros(4,1)
+  
+    # Integração por quadratura de Gauss-Legendre
+    pg = (1/sqrt(3))*[-1;1]
+    wg = ones(2)
+  
+    @inbounds for i=1:2
+        # Ponto e peso nesta dimensão
+        r = pg[i]
+        wr = wg[i]
+  
+        @inbounds for j=1:2
+
+            # Ponto e peso nesta dimensão
+            s = pg[j]
+            ws = wg[j]
+  
+            # Derivadas das funções de interpolação
+            # em relação a    'r' e 's'
+            dNr, dNs = dNrs_bi4(r,s)
+  
+            # Calcula a matriz Jacobiana no ponto r,s
+            J = Jacobiana_bi4(r,s,X)
+
+            # Calcula a função de interpolação 
+            N = Matriz_N_bi4(r,s)
+
+            # Somatórios
+            Fe .= Fe + ρm*N'*det(J)
+  
+        end
+    end
+  
+    # Retorna o vetor de força de corpo
+    return Fe
+  
+
+end
+
+
+
 # ===================================================================================
 #    Edges, normals and tangents
 #

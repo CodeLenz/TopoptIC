@@ -7,9 +7,11 @@
 #
 # Material,nome,id,μ [ surfaces (and volumes) ]
 #
-# Open [ lines and/or nodes and/or surfaces]
+# φm [ lines and/or nodes and/or surfaces]
 # 
-# bn,value [ lines and/or nodes and/or surfaces]
+# hn,value [ lines and/or nodes and/or surfaces]
+#
+# ρm,value [surfaces/volumes]
 #
 #
 #        Elementos que estão implementados
@@ -54,19 +56,25 @@ function Parsemsh(meshfile::String,verbose=false)
     pgroups, pgnames = Lgmsh_import_physical_groups(meshfile)
 
     # Vector with Dicts of materials
-    materials = Dict{String,Union{Float64,Int64,Vector{Int64}}}[]
+    vector_materials = Dict{String,Union{Float64,Int64,Vector{Int64}}}[]
 
     # Local dict inside the loop
     localD_m = Dict{String,Union{Float64,Int64,Vector{Int64}}}()
 
-    # Vector with Dicts of normal b on nodes
-    bn = Dict{String,Union{Float64,Matrix{Int64}}}[]
+    # Vector with Dicts of materials
+    vector_ρm = Dict{String,Union{Float64,Vector{Int64}}}[]
 
     # Local dict inside the loop
-    localD_bn = Dict{String,Union{Float64,Matrix{Int64}}}()
+    localD_ρm = Dict{String,Union{Float64,Vector{Int64}}}()
 
-    # Vector of OPEN nodes
-    nodes_open = Int64[]
+    # Vector with Dicts of normal h on nodes
+    vector_hn = Dict{String,Union{Float64,Matrix{Int64}}}[]
+
+    # Local dict inside the loop
+    localD_hn = Dict{String,Union{Float64,Matrix{Int64}}}()
+
+    # Vector of prescribed φm nodes
+    nodes_φm = Int64[]
 
     # Maximum id in materials
     max_id = 0
@@ -105,27 +113,48 @@ function Parsemsh(meshfile::String,verbose=false)
             localD_m["elements"] = sort(elems_domain)
 
             # Copy the dict to the vector of materials
-            push!(materials,copy(localD_m))
+            push!(vector_materials,copy(localD_m))
 
-      elseif  occursin("Open",st[1])
+       # densidade de carga volumétrica
+       elseif occursin("ρm",st[1])
+
+            # Clean dictionary to store local data
+            empty!(localD_ρm)
+
+            # We expect a valune
+            ρ = parse(Float64,st[2])
+
+            # Populate local dict
+            localD_ρm["value"]   = ρ
+          
+            # Now we must find wich elements are associated to this group
+            elems_domain = Lgmsh.Readelementsgroup(meshfile,name,etags)
+
+            # And store in the dict in Forward order (smaller to the largest)
+            localD_ρm["elements"] = sort(elems_domain)
+
+            # Copy the dict to the vector of materials
+            push!(vector_ρm,copy(localD_ρm))
+
+      elseif  occursin("φm",st[1])
 
             # Find nodes 
             nodes = Lgmsh.Readnodesgroup(meshfile,name)
 
             # Append
-            nodes_open = vcat(nodes_open,nodes)
+            nodes_φm = vcat(nodes_φm,nodes)
 
       
-      elseif  occursin("bn",st[1])
+      elseif  occursin("hn",st[1])
 
             # Clean dictionary to store local data
-            empty!(localD_bn)
+            empty!(localD_hn)
 
             # Normal b
-            localD_bn["value"] = parse(Float64,st[2])
+            localD_hn["value"] = parse(Float64,st[2])
 
             # Find nodes 
-            nodes_bn = Lgmsh.Readnodesgroup(meshfile,name)
+            nodes_hn = Lgmsh.Readnodesgroup(meshfile,name)
 
             # If 2D  - Find element and edges
             # else   - Find element faces
@@ -134,9 +163,9 @@ function Parsemsh(meshfile::String,verbose=false)
             edges = Int64[]
             for tt in et
                 if dimensao==2
-                   eleedges_,edges_ = FindElementsEdges(tt,ne,etypes,connect,nodes_bn)
+                   eleedges_,edges_ = FindElementsEdges(tt,ne,etypes,connect,nodes_hn)
                 else
-                    eleedges_,edges_ = FindElementsFaces(tt,ne,etypes,connect,nodes_bn)
+                    eleedges_,edges_ = FindElementsFaces(tt,ne,etypes,connect,nodes_hn)
                 end
                 if !isempty(eleedges_)
                     push!(eleedges,eleedges_...)
@@ -145,10 +174,10 @@ function Parsemsh(meshfile::String,verbose=false)
             end
 
             # Append
-            localD_bn["elements"] = [eleedges edges]
+            localD_hn["elements"] = [eleedges edges]
 
             # Copy the dict to the vector of velocities
-            push!(bn,copy(localD_bn))
+            push!(vector_hn,copy(localD_hn))
 
       end #if
 
@@ -166,7 +195,7 @@ function Parsemsh(meshfile::String,verbose=false)
     materials2 = zeros(max_id,1)
    
     # loop over vector of material dicts
-    for mat in materials
+    for mat in vector_materials
 
         # id
         id = mat["id"]
@@ -208,6 +237,6 @@ function Parsemsh(meshfile::String,verbose=false)
     println("Convertendo $ntipo2 de $ne elementos")
 
     # Return processed data
-    return nn, coord, ne, connect2, materials2, unique!(nodes_open), bn, centroids
+    return nn, coord, ne, connect2, materials2, unique!(nodes_φm), vector_hn, vector_ρm, centroids
 
 end    

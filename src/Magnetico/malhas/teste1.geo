@@ -1,13 +1,13 @@
 //
 // Domínio quadrado 
 //
-//          ϕ0
+//          φm
 //     ------------
 //     |          |
-//  ϕ0 |          |  bn
+//  φm |          |  hn
 //     |          | 
 //     |__________|  
-//          ϕ0
+//          φm
 
 // Element size
 lc = 0.01;
@@ -32,11 +32,10 @@ Plane Surface(1) = {1};
 Physical Surface("Material,mat,1,1E-8") = {1};
 
 // Boundary conditions - Open
-Physical Curve("Open") = {1,3,4};
+Physical Curve("φm") = {1,3,4};
 
 // Boundary conditions - bn
-Physical Curve("bn,1.0") = {2};
-
+Physical Curve("hn,1.0") = {2};
 
 // Convert triangles to quads
 Recombine Surface{:};

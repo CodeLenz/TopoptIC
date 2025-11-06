@@ -3,13 +3,13 @@ SetFactory("OpenCASCADE");
 //
 // Domínio quadrado 
 //
-//          ϕ0
+//          φm
 //     ------------
 //     |          |
-//  ϕ0 |     0    |  ϕ0
+//  φm |     0    |  φm
 //     |          | 
 //     |__________|  
-//          ϕ0
+//          φm
 
 // Element size
 lc = 0.01;
@@ -48,11 +48,11 @@ Curve{5} In Surface{1};
 // Material
 Physical Surface("Material,mat,1,1E-8") = {1};
 
-// Boundary conditions - Open
-Physical Curve("Open") = {1,2,3,4};
+// Condição de contorno essencial
+Physical Curve("φm") = {1,2,3,4};
 
-// Boundary conditions - bn
-Physical Curve("bn,1.0") = {5};
+// Boundary conditions - hn
+Physical Curve("hn,1.0") = {5};
 
 // Convert triangles to quads
 Recombine Surface{:};

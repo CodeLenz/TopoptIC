@@ -18,7 +18,7 @@ include("pos/pos_processamento.jl")
 function Analise(meshfile::String)
     
     # Le dados da malha
-    nn, coord, ne, connect, materials, ϕ0, bn, _ = Parsemsh(meshfile)
+    nn, coord, ne, connect, materials, φm, vetor_hn, vetor_ρm, _ = Parsemsh(meshfile)
 
     # Precisamos de um material
     if isempty(materials)
@@ -29,10 +29,16 @@ function Analise(meshfile::String)
     K = Monta_K(ne,coord,connect,materials)
 
     # Posições que não precisam ser calculadas no sistema de equações 
-    livres = setdiff(collect(1:nn),ϕ0)
+    livres = setdiff(collect(1:nn),φm)
     
-    # Vetor de forças 
-    P = Vetor_P(nn,bn,coord,connect)
+    # Vetor de forças devido a h normal ao contorno
+    Phn = Vetor_Phn(nn,vetor_hn,coord,connect)
+
+    # Vetor de forças de corpo devido a ρm
+    Pρm = Vetor_Pρm(nn,vetor_ρm,coord,connect)
+
+    # Força total 
+    P = Phn + Pρm
 
     # Aloca um vetor Φ com a dimensão completa
     Φ = zeros(nn)
@@ -53,9 +59,8 @@ function Analise(meshfile::String)
     H, B =  Calcula_HB(ne,coord,connect,materials,Φ)
 
     # Grava o campo B
-    Lgmsh_export_element_scalar("saida.pos",B[:,1],"Bx") 
-    Lgmsh_export_element_scalar("saida.pos",B[:,2],"By") 
-
+    #Lgmsh_export_element_scalar("saida.pos",B[:,1],"Bx") 
+    #Lgmsh_export_element_scalar("saida.pos",B[:,2],"By") 
 
     # Retorna os resultados
     return Φ, H, B
