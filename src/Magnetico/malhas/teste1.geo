@@ -1,41 +1,56 @@
 //
-// Domínio quadrado 
+// Domínio retangular com dimensão L x H
 //
-//          φm
-//     ------------
-//     |          |
-//  φm |          |  hn
-//     |          | 
-//     |__________|  
-//          φm
+// sem termo fonte e com hn = -2 na face da direita
+// a face da esquerda tem potencial nulo prescrito
+//
+// A propriedade do material é \mu=1 em todo o domínio
+//
+// A solução analítica é phi(x) = 2*x 
+//
+// e os campos B e H serão -2 na direção X 
+//
+//         
+//     -----------------------
+//     |                     |
+//  φm |                     |  hn
+//     |                     | 
+//     |_____________________|  
+//         
+//
 
-// Element size
+// Tamanho do elemento 
 lc = 0.01;
 
-// Corners
-Point(1) = { 0, 0,   0, lc};
-Point(2) = { 1, 0,   0, lc};
-Point(3) = { 1, 1,   0, lc};
-Point(4) = { 0, 1,   0, lc};
+// Dimensões 
+L = 1.0;
+H = 0.1;
 
-// Edges
+
+// Cantos do domínio
+Point(1) = { 0, 0,   0, lc};
+Point(2) = { L, 0,   0, lc};
+Point(3) = { L, H,   0, lc};
+Point(4) = { 0, H,   0, lc};
+
+// Arestas
 Line(1) = {1, 2};
 Line(2) = {2, 3};
 Line(3) = {3, 4};
 Line(4) = {4, 1};
 
-// Surface
+// Superfície
 Curve Loop(1) = {1, 2, 3, 4};
 Plane Surface(1) = {1};
 
 // Material
-Physical Surface("Material,mat,1,1E-8") = {1};
+Physical Surface("Material,mat,1,1.0") = {1};
 
 // Boundary conditions - Open
-Physical Curve("φm") = {1,3,4};
+Physical Curve("φm") = {4};
 
-// Boundary conditions - bn
-Physical Curve("hn,1.0") = {2};
+// Boundary conditions - hn
+Physical Curve("hn,-2.0") = {2};
 
 // Convert triangles to quads
 Recombine Surface{:};
