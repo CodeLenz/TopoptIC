@@ -1,6 +1,7 @@
 using LinearAlgebra
 using SparseArrays
 using StaticArrays
+using DelimitedFiles
 using Lgmsh
 
 # Carrega as rotinas do programa

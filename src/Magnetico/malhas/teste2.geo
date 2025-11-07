@@ -1,58 +1,48 @@
 SetFactory("OpenCASCADE");
 
 //
-// Domínio quadrado 
+// Retângulo 1 x 1 sem termo fonte unitário com mu=1.0 em todo 
+// o domínio
 //
-//          φm
+//          φm        
 //     ------------
 //     |          |
-//  φm |     0    |  φm
+//  φm |          |  φm
 //     |          | 
 //     |__________|  
 //          φm
+//
+//
 
-// Element size
+// Tamanho do elemento 
 lc = 0.01;
 
-// Tamanho de elemento 
-Mesh.CharacteristicLengthMin = lc;
-Mesh.CharacteristicLengthMax = lc;
+// Cantos
+Point(1) = { 0, 0,   0, lc};
+Point(2) = { 1, 0,   0, lc};
+Point(3) = { 1, 1,   0, lc};
+Point(4) = { 0, 1,   0, lc};
 
-// Corners
-Point(1) = { 0, 0,   0};
-Point(2) = { 1, 0,   0};
-Point(3) = { 1, 1,   0};
-Point(4) = { 0, 1,   0};
-
-// Edges
+// Arestas
 Line(1) = {1, 2};
 Line(2) = {2, 3};
 Line(3) = {3, 4};
 Line(4) = {4, 1};
 
-// Circulo no meio 
-Circle(5) = {0.5, 0.5, 0, 0.1, 0, 2*Pi};
-
 // Loop para a superfície
 Curve Loop(1) = {1, 2, 3, 4};
-
-// Curve loop para o círculo 
-Curve Loop(2) = {5};
 
 // Gera a superfície
 Plane Surface(1) = {1};
 
-// Incorpora o círculo na malha
-Curve{5} In Surface{1};
-
 // Material
-Physical Surface("Material,mat,1,1E-8") = {1};
+Physical Surface("Material,mat,1,1.0") = {1};
 
 // Condição de contorno essencial
 Physical Curve("φm") = {1,2,3,4};
 
-// Boundary conditions - hn
-Physical Curve("hn,1.0") = {5};
+// Termo fonte 
+Physical Surface("ρm,1.0") ={1};
 
 // Convert triangles to quads
 Recombine Surface{:};

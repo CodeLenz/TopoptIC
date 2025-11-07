@@ -237,6 +237,6 @@ function Parsemsh(meshfile::String,verbose=false)
     println("Convertendo $ntipo2 de $ne elementos")
 
     # Return processed data
-    return nn, coord, ne, connect2, materials2, unique!(nodes_φm), vector_hn, vector_ρm, centroids
+    return nn, coord, ne, connect2, materials2, sort!(unique!(nodes_φm)), vector_hn, vector_ρm, centroids
 
 end    
