@@ -15,7 +15,6 @@
 #
 #
 #        Elementos que estão implementados
-# *** ESTAMOS USANDO SÓ O TIPO 3 POR ENQUANTO ***
 #          2D
 # 2 -> triangular (linear)
 # 3 -> quadrangular (linear)
@@ -213,28 +212,6 @@ function Parsemsh(meshfile::String,verbose=false)
          
     end
 
-
-    # Passada para converter os elementos do tipo 2 para tipo 3
-    println("CUIDADO:: convertendo elementos do tipo 2 para o tipo 3")
-    ntipo2 = 0
-    for i=1:ne
-
-        # Testa se o elemento é  do tipo 2
-        if connect2[i,1]==2
-           
-            # Acumula contador de tipo 2
-            ntipo2 += 1
-
-            # Converte para 3 
-            connect2[i,1] = 3
-
-            # Copia o nó 3 para o 4
-            connect2[i,end] = connect2[i,end-1]
-        end
-
-    end
-
-    println("Convertendo $ntipo2 de $ne elementos")
 
     # Return processed data
     return nn, coord, ne, connect2, materials2, sort!(unique!(nodes_φm)), vector_hn, vector_ρm, centroids
