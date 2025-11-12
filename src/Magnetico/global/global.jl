@@ -25,23 +25,22 @@ function Monta_K(ne,coord,connect,materials)
         nos, X = Nos_Coordenadas(ele,et,coord,connect) 
 
         # Monta as matrizes dos elementos
-        Ke = Ke_bi4(μ,X)
+        #Ke = Ke_bi4(μ,X)
 
-        #=
         if et==3
-           Ke = KMe_bi4(μ,X)
+           Ke = Ke_bi4(μ,X)
         elseif et==2
-           Ke = KMe_tri3(μ,X)
+           Ke = Ke_tri3(μ,X)
         elseif et==4
-            Ke = KMe_tet4(μ,X)
+            Ke = Ke_tet4(μ,X)
         elseif et==5
-           Ke = KMe_hex8(μ,X)
+           Ke = Ke_hex8(μ,X)
         elseif et==7
-            Ke = KMe_pyr5(μ,X)
+            Ke = Ke_pyr5(μ,X)
         else
-            error("Elemento não definido")
+            error("Global::Elemento não definido")
         end
-        =#
+    
  
         # Sobreposição das locais nas globais
         for i in LinearIndices(nos)

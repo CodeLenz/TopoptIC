@@ -106,7 +106,7 @@ function Matriz_B_pyr5(r,s,t,X::Array)
  # ===================================================================================
 # Calcula a matriz Ke para um elemento 
 #
-function KMe_pyr5(μ,iκ,X)
+function Ke_pyr5(μ,iκ,X)
 
     # Aloca as matrizes
     Ke = @MMatrix zeros(5,5)
@@ -245,25 +245,7 @@ function Face_load_local_pyr5(face,qn,X)
 
 end
 
-# ===================================================================================
-# Damping matrix Ce
-#
-function Damping_local_pyr5(face,damp,X)
 
-    # As we assume cte damp
-    # and the element is linear
-    # we can use one Gauss Point
-
-    # Compute Mappings (face's center)
-    N, dJ = Map_face_pyr5(face,0.0,0.0,X)
-
-    # Matrix
-    C   = (N'*N)*damp*(dJ*2.0)
-  
-    # Return C
-    return C
-
-end
 
 # ===================================================================================
 # Calcula a volume do elemento

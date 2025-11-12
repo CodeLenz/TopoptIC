@@ -149,7 +149,7 @@ function Body_load_local_bi4(ρm,X)
   
             # Derivadas das funções de interpolação
             # em relação a    'r' e 's'
-            dNr, dNs = dNrs_bi4(r,s)
+            #dNr, dNs = dNrs_bi4(r,s)
   
             # Calcula a matriz Jacobiana no ponto r,s
             J = Jacobiana_bi4(r,s,X)

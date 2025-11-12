@@ -2,7 +2,7 @@
 #
 # Calcula as matrizes Ke e Me para um elemento 
 #
-function KMe_tri3(μ,iκ,X)
+function Ke_tri3(μ,X)
 
   # Mapeamento para facilitar a notação
   x1,x2,x3 = X[:,1]
@@ -72,46 +72,7 @@ function Edge_load_local_tri3(edge,qn,X::Matrix)
 
 end
 
-# ===================================================================================
-# Damping matrix Ce
-#
-function Damping_local_tri3(edge,damp,X)
-  
-  # Initialize the damping matrix
-  C = zeros(3,3)
 
-  # face 1 (12)
-  if edge==1
-     cte1 = damp*sqrt(X[2,2]^2-2*X[1,2]*X[2,2]+X[1,2]^2+X[2,1]^2-2*X[1,1]*X[2,1]+X[1,1]^2)
-     C[1,1] = cte1/3
-     C[1,2] = cte1/6
-     C[2,1] = C[1,2]
-     C[2,2] = cte1/3
-  
-  elseif edge==2
-
-  # face 2 (23)
-     cte2 = damp*sqrt(X[3,2]^2-2*X[2,2]*X[3,2]+X[2,2]^2+X[3,1]^2-2*X[2,1]*X[3,1]+X[2,1]^2)
-     C[2,2] = cte2/3
-     C[2,3] = cte2/6
-     C[3,2] = C[2,3]
-     C[3,3] = cte2/3
-  
-  else
- 
-    # face 3 (13)
-    cte3 = damp*sqrt(X[3,2]^2-2*X[1,2]*X[3,2]+X[1,2]^2+X[3,1]^2-2*X[1,1]*X[3,1]+X[1,1]^2)
-    C[1,1] = cte3/3
-    C[1,3] = cte3/6
-    C[3,1] = C[1,3]
-    C[3,3] = cte3/3
-
-  end
-  
-  # Return C
-  return C
-
-end
 
 # ===================================================================================
 # Calcula a área do elemento

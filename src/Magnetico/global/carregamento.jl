@@ -34,9 +34,8 @@ function Vetor_Phn(nn,hn,coord,connect)
       val = valor
 
       # Local vector 
-      Pn = Edge_load_local_bi4(edge,val,X)
+      #Pn = Edge_load_local_bi4(edge,val,X)
 
-      #=
       if et==3
         Pn = Edge_load_local_bi4(edge,val,X)
       elseif et==2
@@ -50,7 +49,7 @@ function Vetor_Phn(nn,hn,coord,connect)
       else
         error("Vetor_P!:: Tipo de elemento não definido")
       end
-      =#
+      
 
       # Add to the global vector
       P[nos] .+= Pn

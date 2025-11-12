@@ -111,7 +111,7 @@ end
 # ===================================================================================
 # Calcula a matriz Ke para um elemento 
 #
-function KMe_hex8(μ,X)
+    function Ke_hex8(μ,X)
       
     # Aloca as matrizes
     Ke = @MMatrix zeros(8,8)
@@ -181,7 +181,7 @@ function Body_load_local_hexa(ρm,X)
     
                 # Derivadas das funções de interpolação
                 # em relação a    'r' e 's'
-                dNr, dNs, dNt = dNrs_hex8(r,s,t) # Também fiquei com duvida em relação
+                # dNr, dNs, dNt = dNrs_hex8(r,s,t) # Também fiquei com duvida em relação
                                                  # da finalidade de calcular os dN...
     
                 # Calcula a matriz Jacobiana no ponto r,s
@@ -342,25 +342,6 @@ function Face_load_local_hex8(face,qn,X)
 
 end
 
-# ===================================================================================
-# Damping matrix Ce
-#
-function Damping_local_hex8(face,damp,X)
-
-    # As we assume cte damp
-    # and the element is linear
-    # we can use one Gauss Point
-
-    # Compute Mappings (face's center)
-    N, dJ = Map_face_hex8(face,0.0,0.0,X)
-
-    # Matrix
-    C   = (N'*N)*damp*(dJ*2.0)
-  
-    # Return C
-    return C
-
-end
 
 # ===================================================================================
 # Calcula a volume do elemento

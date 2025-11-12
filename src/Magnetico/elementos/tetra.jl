@@ -99,7 +99,7 @@ end
 # ===================================================================================
 # Calcula as matrizes Ke e Me para um elemento 
 #
-function KMe_tet4(μ,iκ,X)
+function Ke_tet4(μ,iκ,X)
    
   # Coordinates
   x1,x2,x3,x4 = X[:,1] 
@@ -179,60 +179,3 @@ function Face_load_local_tet4(face,qn,X)
 
 end
 
-# ===================================================================================
-# Damping matrix Ce
-#
-function Damping_local_tet4(face,damp,X)
- 
-  # Basic test
-  face in 1:4 || throw("Damping_local_tet4::Invalid face")
-
-  # Coordinates
-  x1,x2,x3,x4 = X[:,1] 
-  y1,y2,y3,y4 = X[:,2]
-  z1,z2,z3,z4 = X[:,3]
-
-  if face==1
-
-    # Nodes 1,2,3 (t=-1)
-    dJ1 = 2*sqrt(((y2-y1)*(z3-z1)-(y3-y1)*(z2-z1))^2+((x3-x1)*(z2-z1)-(x2-x1)*(z3-z1))^2+((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1))^2)
-
-    C =   dJ1*[4/9 2/9 1/3 0;
-               2/9 4/9 1/3 0;
-               1/3 1/3 4/3 0;
-               0 0 0 0];
-  
-  elseif face==2
-
-    # Nodes 1,3,4 (s=-1)
-    dJ2 = 2*sqrt(((y2-y1)*(z4-z1)-(y4-y1)*(z2-z1))^2+((x4-x1)*(z2-z1)-(x2-x1)*(z4-z1))^2+((x2-x1)*(y4-y1)-(x4-x1)*(y2-y1))^2)
-
-    C = dJ2*[4/9 2/9 0 1/3;
-             2/9 4/9 0 1/3;
-             0 0 0 0;
-             1/3 1/3 0 4/3];
-    
-  elseif face==3
-
-    # Nodes 2,3,4 (r=1)
-    dJ3 = 2*sqrt(((y3-y2)*(z4-z2)-(y4-y2)*(z3-z2))^2+((x4-x2)*(z3-z2)-(x3-x2)*(z4-z2))^2+((x3-x2)*(y4-y2)-(x4-x2)*(y3-y2))^2)
-    C = dJ3*[0 0 0 0;
-             0 4/9 2/9 1/3;
-             0 2/9 4/9 1/3;
-             0 1/3 1/3 4/3];
-
-  else
-
-    # Nodes 3,1,4 (r=-1)
-    dJ4 = 2*sqrt(((y1-y3)*(z4-z3)-(y4-y3)*(z1-z3))^2+((x4-x3)*(z1-z3)-(x1-x3)*(z4-z3))^2+((x1-x3)*(y4-y3)-(x4-x3)*(y1-y3))^2)
-    C = dJ4*[4/9 0 2/9 1/3;
-              0 0 0 0;
-              2/9 0 4/9 1/3;
-              1/3 0 1/3 4/3];
-    
-  end
-
-  # Return C
-  return C
-
-end
