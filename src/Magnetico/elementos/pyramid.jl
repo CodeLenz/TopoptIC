@@ -104,13 +104,12 @@ function Matriz_B_pyr5(r,s,t,X::Array)
  end
 
  # ===================================================================================
-# Calcula as matrizes Ke e Me para um elemento 
+# Calcula a matriz Ke para um elemento 
 #
-function KMe_pyr5(iρ,iκ,X)
+function KMe_pyr5(μ,iκ,X)
 
     # Aloca as matrizes
     Ke = @MMatrix zeros(5,5)
-    Me = @MMatrix zeros(5,5)
   
     # Integração por quadratura de Gauss-Legendre
     pg = (1/sqrt(3))*[-1;1]
@@ -130,18 +129,14 @@ function KMe_pyr5(iρ,iκ,X)
                 # Calcula DJ e B 
                 B, dJ = Matriz_B_pyr5(r,s,t,X)
     
-                # Calcula N(r,s,t)
-                N = Matriz_N_pyr5(r,s,t) 
-    
                 # Somatórios
-                Me = Me + N'*N*dJ
-                Ke = Ke + B'*B*dJ
+                Ke = Ke + μ*B'*B*dJ
 
             end  #k 
         end #j
     end #i
   
-    return iρ*Ke, iκ*Me
+    return Ke
   
 end
 

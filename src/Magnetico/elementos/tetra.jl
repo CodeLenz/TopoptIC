@@ -99,7 +99,7 @@ end
 # ===================================================================================
 # Calcula as matrizes Ke e Me para um elemento 
 #
-function KMe_tet4(iρ,iκ,X)
+function KMe_tet4(μ,iκ,X)
    
   # Coordinates
   x1,x2,x3,x4 = X[:,1] 
@@ -116,22 +116,9 @@ function KMe_tet4(iρ,iκ,X)
   B = Matriz_B_tet4(X)
 
   # Rigidez
-  Ke = i̢ρ * transpose(B)*B*V
+  Ke = μ * transpose(B)*B*V
 
-  # Calculo da matriz da massa
-  cte = (((x2-x1)*y3+(x1-x3)*y2+(x3-x2)*y1)*z4+((x1-x2)*y4+(x4-x1)*y2+
-          (x2-x4)*y1)*z3+((x3-x1)*y4+(x1-x4)*y3+(x4-x3)*y1)*z2+
-          ((x2-x3)*y4+(x4-x2)*y3+(x3-x4)*y2)*z1) / c^2
-
-  cte1 = cte / 60
-  cte2 = cte1 / 2       
-     
-  Me = iκ * @SMatrix [cte1 cte2 cte2 cte2 ;
-                      cte2 cte1 cte2 cte2 ; 
-                      cte2 cte2 cte1 cte2 ; 
-                      cte2 cte2 cte2 cte1 ]
-
-  return Ke, Me
+  return Ke
   
 end
 

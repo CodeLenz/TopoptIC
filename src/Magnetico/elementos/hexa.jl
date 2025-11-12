@@ -109,13 +109,12 @@ function Matriz_B_hex8(r,s,t,X::Array)
 end
 
 # ===================================================================================
-# Calcula as matrizes Ke e Me para um elemento 
+# Calcula a matriz Ke para um elemento 
 #
-function KMe_hex8(iρ,iκ,X)
+function KMe_hex8(μ,X)
       
     # Aloca as matrizes
     Ke = @MMatrix zeros(8,8)
-    Me = @MMatrix zeros(8,8)
   
     # Integração por quadratura de Gauss-Legendre
     pg = (1/sqrt(3))*[-1;1]
@@ -139,20 +138,71 @@ function KMe_hex8(iρ,iκ,X)
                 # Calcula DJ e B 
                 B, dJ = Matriz_B_hex8(r,s,t,X)
     
-                # Calcula N(r,s,t)
-                N = Matriz_N_hex8(r,s,t) 
-    
                 # Somatórios
-                Me = Me + N'*N*dJ
-                Ke = Ke + B'*B*dJ
+                Ke = Ke + μ*B'*B*dJ
 
             end  #k 
         end #j
     end #i
   
-    return  iρ*Ke, iκ*Me
+    return Ke
   
 end
+
+#
+# Tentativa de adaptar do bi4
+# Vetor de forças de corpo para o hex8
+#
+function Body_load_local_hexa(ρm,X)
+
+    # Aloca o vetor 4 × 1
+    Fe = zeros(6,1)
+  
+    # Integração por quadratura de Gauss-Legendre
+    pg = (1/sqrt(3))*[-1;1]
+    wg = ones(2)
+  
+    @inbounds for i=1:2
+        # Ponto e peso nesta dimensão
+        r = pg[i]
+        wr = wg[i] # Qual o propósito do wr, ws, wt???
+  
+        @inbounds for j=1:2
+
+            # Ponto e peso nesta dimensão
+            s = pg[j]
+            ws = wg[j]
+  
+            @inbounds for k=1:2
+
+                # Ponto e peso nesta dimensão
+                t = pg[k]
+                wt = wg[k]
+    
+                # Derivadas das funções de interpolação
+                # em relação a    'r' e 's'
+                dNr, dNs, dNt = dNrs_hex8(r,s,t) # Também fiquei com duvida em relação
+                                                 # da finalidade de calcular os dN...
+    
+                # Calcula a matriz Jacobiana no ponto r,s
+                J = Jacobiana_hex8(r,s,t,X)
+
+                # Calcula a função de interpolação 
+                N = Matriz_N_hex8(r,s,t)
+
+                # Somatórios
+                Fe .= Fe + ρm*N'*det(J)
+            end  
+        end
+    end
+  
+    # Retorna o vetor de força de corpo
+    return Fe
+  
+
+end
+
+
 
 # ===================================================================================
 # Faces

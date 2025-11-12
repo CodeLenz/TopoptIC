@@ -2,7 +2,7 @@
 #
 # Calcula as matrizes Ke e Me para um elemento 
 #
-function KMe_tri3(iρ,iκ,X)
+function KMe_tri3(μ,iκ,X)
 
   # Mapeamento para facilitar a notação
   x1,x2,x3 = X[:,1]
@@ -18,13 +18,9 @@ function KMe_tri3(iρ,iκ,X)
   k22 = (y3^2-2*y1*y3+y1^2+x3^2-2*x1*x3+x1^2)/comum
   k23 = -((y2-y1)*y3-y1*y2+y1^2+(x2-x1)*x3-x1*x2+x1^2)/comum
   k33 = (y2^2-2*y1*y2+y1^2+x2^2-2*x1*x2+x1^2)/comum
-  Ke =  iρ * @SMatrix [k11 k12 k13 ; k12 k22 k23 ; k13 k23 k33]
+  Ke =  μ * @SMatrix [k11 k12 k13 ; k12 k22 k23 ; k13 k23 k33]
 
-  # Termos da massa
-  m  = iκ *((x2-x1)*y3+(x1-x3)*y2+(x3-x2)*y1)/12
-  Me = @SMatrix [m m/2 m/2 ; m/2 m m/2 ; m/2 m/2 m]
-    
-  return Ke, Me
+  return Ke
 
 end
   

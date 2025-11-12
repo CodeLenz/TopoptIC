@@ -90,7 +90,7 @@ function Matriz_B_bi4(r,s,X::Array)
 end
   
 # ===================================================================================
-# Calcula as matrizes Ke e Me para um elemento 
+# Calcula a matriz Ke para um elemento 
 #
 function Ke_bi4(μ,X)
 
@@ -290,7 +290,7 @@ function Edge_load_local_bi4(edge,qn,X)
     # we can use one Gauss Point
 
     # Compute Mappings
-    n, t, dJ, N = Map_edge_bi4(edge,0.0,X)
+    n, t, dJ, N = Map_edge_bi4(edge,0.0,X) # n, t???
 
     # Sums
     F   = (N')*(qn*dJ)*2.0
