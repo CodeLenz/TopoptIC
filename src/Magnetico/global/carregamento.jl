@@ -96,24 +96,21 @@ function Vetor_Pρm(nn,vetor_ρm,coord,connect)
       # Find nodes and coordinates
       nos,X = Nos_Coordenadas(ele,et,coord,connect)
 
-      # Local vector 
-      Pb = Body_load_local_bi4(valor,X)
-
-      #=
+      # Local vector
       if et==3
-        Pn = Edge_load_local_bi4(edge,val,X)
+        Pb = Body_load_local_bi4(valor,X)
       elseif et==2
-        Pn = Edge_load_local_tri3(edge,val,X)
+        Pb = Body_load_local_tri3(valor,X)
       elseif et==4
-        Pn = Face_load_local_tet4(edge,val,X)
+        Pb = Body_load_local_tet4(valor,X)
       elseif et==5
-        Pn = Face_load_local_hex8(edge,val,X)
+        Pb = Body_load_local_hex8(valor,X)
       elseif et==7
-        Pn = Face_load_local_pyr5(edge,val,X)
+        Pb = Body_load_local_pyr5(valor,X)
       else
         error("Vetor_P!:: Tipo de elemento não definido")
       end
-      =#
+      
 
       # Add to the global vector
       P[nos] .+= Pb

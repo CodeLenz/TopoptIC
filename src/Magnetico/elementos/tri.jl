@@ -23,7 +23,7 @@ function KMe_tri3(μ,iκ,X)
   return Ke
 
 end
-  
+
 # ===================================================================================
 # Force vector for a bi3 element 
 # local (normal) surface load.

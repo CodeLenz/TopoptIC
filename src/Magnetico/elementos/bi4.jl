@@ -129,7 +129,7 @@ end
 #
 function Body_load_local_bi4(ρm,X)
 
-    # Aloca o vetor 4 × 1
+    # Aloca o vetor 4 × 1 #Por que é 4x1 mesmo??
     Fe = zeros(4,1)
   
     # Integração por quadratura de Gauss-Legendre
@@ -158,7 +158,7 @@ function Body_load_local_bi4(ρm,X)
             N = Matriz_N_bi4(r,s)
 
             # Somatórios
-            Fe .= Fe + ρm*N'*det(J)
+            Fe .= Fe + ρm*N'*det(J) #A eq está certa? 16.45 FEM
   
         end
     end

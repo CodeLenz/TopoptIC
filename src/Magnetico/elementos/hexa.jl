@@ -155,7 +155,7 @@ end
 #
 function Body_load_local_hexa(ρm,X)
 
-    # Aloca o vetor 4 × 1
+    # Aloca o vetor 6 × 1
     Fe = zeros(6,1)
   
     # Integração por quadratura de Gauss-Legendre
