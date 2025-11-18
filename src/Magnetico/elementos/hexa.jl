@@ -153,10 +153,10 @@ end
 # Tentativa de adaptar do bi4
 # Vetor de forças de corpo para o hex8
 #
-function Body_load_local_hexa(ρm,X)
+function Body_load_local_hexa(ρm,μ,X)
 
-    # Aloca o vetor 6 × 1
-    Fe = zeros(6,1)
+    # Aloca o vetor 8 × 1
+    Fe = zeros(8)
   
     # Integração por quadratura de Gauss-Legendre
     pg = (1/sqrt(3))*[-1;1]
@@ -191,7 +191,7 @@ function Body_load_local_hexa(ρm,X)
                 N = Matriz_N_hex8(r,s,t)
 
                 # Somatórios
-                Fe .= Fe + ρm*N'*det(J)
+                Fe .= Fe + μ*ρm*N'*det(J)
             end  
         end
     end

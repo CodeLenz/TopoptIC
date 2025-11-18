@@ -76,6 +76,9 @@ function Vetor_Pρm(nn,vetor_ρm,coord,connect)
   # Loop pelo vetor bn. Cada linha deste vetor é um dicionário
   for dρm in vetor_ρm
 
+    # μ do material da região 
+    μ = 1.0
+
     # Recover data from Dictionary
     valor = dρm["value"]
 
@@ -97,15 +100,15 @@ function Vetor_Pρm(nn,vetor_ρm,coord,connect)
 
       # Local vector
       if et==3
-        Pb = Body_load_local_bi4(valor,X)
+        Pb = Body_load_local_bi4(valor,μ,X)
       elseif et==2
-        Pb = Body_load_local_tri3(valor,X)
+        Pb = Body_load_local_tri3(valor,μ,X)
       elseif et==4
-        Pb = Body_load_local_tet4(valor,X)
+        Pb = Body_load_local_tet4(valor,μ,X)
       elseif et==5
-        Pb = Body_load_local_hex8(valor,X)
+        Pb = Body_load_local_hex8(valor,μ,X)
       elseif et==7
-        Pb = Body_load_local_pyr5(valor,X)
+        Pb = Body_load_local_pyr5(valor,μ,sX)
       else
         error("Vetor_P!:: Tipo de elemento não definido")
       end

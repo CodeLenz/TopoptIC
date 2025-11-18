@@ -99,12 +99,8 @@ end
 # ===================================================================================
 # Calcula as matrizes Ke e Me para um elemento 
 #
-function Ke_tet4(μ,iκ,X)
+function Ke_tet4(μ,X)
    
-  # Coordinates
-  x1,x2,x3,x4 = X[:,1] 
-  y1,y2,y3,y4 = X[:,2]
-  z1,z2,z3,z4 = X[:,3]
 
   # A matriz de rigidez pode ser calculada de maneira bem rápida,
   # pois B é cte (não depende de r,s,t)

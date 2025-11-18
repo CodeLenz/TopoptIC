@@ -106,7 +106,7 @@ function Matriz_B_pyr5(r,s,t,X::Array)
  # ===================================================================================
 # Calcula a matriz Ke para um elemento 
 #
-function Ke_pyr5(μ,iκ,X)
+function Ke_pyr5(μ,X)
 
     # Aloca as matrizes
     Ke = @MMatrix zeros(5,5)
@@ -286,3 +286,4 @@ function Volume_pyr5(X::Matrix)
     return V/3
 
 end
+

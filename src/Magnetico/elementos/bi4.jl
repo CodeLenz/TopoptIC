@@ -127,10 +127,10 @@ end
 #
 # Vetor de forças de corpo para o bi4
 #
-function Body_load_local_bi4(ρm,X)
+function Body_load_local_bi4(ρm,μ, X)
 
     # Aloca o vetor 4 × 1 #Por que é 4x1 mesmo??
-    Fe = zeros(4,1)
+    Fe = zeros(4)
   
     # Integração por quadratura de Gauss-Legendre
     pg = (1/sqrt(3))*[-1;1]
@@ -158,7 +158,7 @@ function Body_load_local_bi4(ρm,X)
             N = Matriz_N_bi4(r,s)
 
             # Somatórios
-            Fe .= Fe + ρm*N'*det(J) #A eq está certa? 16.45 FEM
+            Fe .= Fe + μ*ρm*N'*det(J) 
   
         end
     end
