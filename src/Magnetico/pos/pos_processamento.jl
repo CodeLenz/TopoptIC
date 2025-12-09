@@ -21,21 +21,35 @@ function Calcula_HB(ne,coord,connect,materials,Φ)
        μ = materials[mat,1]
 
        # Descobre o tipo de elemento 
-       etype = connect[ele,1]   
+       et = connect[ele,1]   
 
        # Descobre os nós e coordenadas do elemento 
-       nos, X = Nos_Coordenadas(ele,etype,coord,connect)
+       nos, X = Nos_Coordenadas(ele,et,coord,connect)
 
        # Pega somente os valores nos nós do elemento 
        ϕe = Φ[nos]
 
        # Monta a matriz Be no centro do elemento 
-       Be,_ = Matriz_B_bi4(0.0,0.0,X)
-
+       if et==3
+          Be,_ = Matriz_B_bi4(0.0,0.0,X)
+       elseif et==2
+          Be = Matriz_B_tri3(X)
+       elseif et==4
+          Be = Matriz_B_tet4(X)
+       elseif et==5
+          Be,_ = Matriz_B_hex8(0.0,0.0,0.0,X)
+       elseif et==7
+          Be,_ = Matriz_B_pyr5(0.0,0.0,0.0,X)
+       else
+        error("Calcula_HB!:: Tipo de elemento não definido")
+       end
+       
+       
        # Calcula Hele 
        Hele = -Be*ϕe
 
        # Calcula Bele
+       # TODO Arrumar o cálculo do B (considerando o ρm)
        Bele = μ*Hele
 
        # Armazena nas linhas das matrizes globais

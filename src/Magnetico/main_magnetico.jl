@@ -7,6 +7,11 @@ using Lgmsh
 # Carrega as rotinas do programa
 include("global/auxiliar.jl")
 include("elementos/bi4.jl")
+include("elementos/tri.jl")
+include("elementos/tetra.jl")
+include("elementos/pyramid.jl")
+include("elementos/hexa.jl")
+
 include("global/carregamento.jl")
 include("global/global.jl")
 include("parse/parse.jl")

@@ -1,9 +1,3 @@
- 
-#
-# Funções de interpolação do triângulo
-#
-
-
 
 #
 # Calcula as matrizes Ke e Me para um elemento 
@@ -102,34 +96,29 @@ end
 function Body_load_local_tri3(ρm,μ, X)
 
     # Aloca o vetor 3 × 1 
-    Fe = zeros(3)
+    Fe = ones(3)
   
-    # Integração por quadratura de Gauss-Legendre
-    pg = (5/3)*ones(2)
-    wg = 1/3*ones(2)
-  
-    @inbounds for i=1:2
-        # Ponto e peso nesta dimensão
-        r = pg[i]
-        wr = wg[i]
-  
-        @inbounds for j=1:2
+    # Calcula a área do triângulo 
+    Ae = Area_tri3(X)
 
-            # Ponto e peso nesta dimensão
-            s = pg[j]
-            ws = wg[j]
+    # Vetor de forças de corpo para o triângulo 
+    return (ρm*μ*Ae/3)*Fe
   
-            # Calcula a função de interpolação 
-            N = Matriz_N_bi4(r,s)
+end
 
-            # Somatórios
-            Fe .= Fe + μ*ρm*N'*det(J) 
-  
-        end
-    end
-  
-    # Retorna o vetor de força de corpo
-    return Fe
-  
+
+function Matriz_B_tri3(X)
+
+  # Recupera as coordenadas nodais
+  x1,y1 = X[1,1:2]
+  x2,y2 = X[2,1:2]
+  x3,y3 = X[3,1:2]
+
+  # Termo em comum
+  comum = 1/((x2-x1)*y3+(x1-x3)*y2+(x3-x2)*y1)
+
+  # Matriz B
+  B = comum*[y2-y3   y3-y1   y1-y2 ;
+             x3-x2   x1-x3   x2-x1 ]
 
 end

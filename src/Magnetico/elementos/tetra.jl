@@ -175,3 +175,19 @@ function Face_load_local_tet4(face,qn,X)
 
 end
 
+
+#
+# Vetor de forças de corpo para o tetra4
+#
+function Body_load_local_tet4(ρm,μ, X)
+
+  # Aloca o vetor 4 × 1 
+  Fe = ones(4)
+  
+  # Calcula o volume do tetraedro
+  Ve = Volume_tet4(X)
+
+  # Vetor de forças de corpo para o tetra
+  return (ρm*μ*Ve/4)*Fe
+
+end

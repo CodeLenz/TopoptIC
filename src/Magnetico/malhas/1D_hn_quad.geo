@@ -1,21 +1,18 @@
 //
-// Domínio retangular com dimensão L x H
+// Domínio retangular com dimensão L x H 
+// L << H (1D)
 //
-// sem termo fonte e com hn = -2 na face da direita
+// sem termo fonte e com hn = 1 na face da direita
 // a face da esquerda tem potencial nulo prescrito
 //
-// A propriedade do material é \mu=1 em todo o domínio
+// A propriedade do material é \mu = 1 em todo o domínio
 //
-// A solução analítica é phi(x) = 2*x 
-//
-// e os campos B e H serão -2 na direção X 
-//
-//         
-//     -----------------------
-//     |                     |
-//  φm |                     |  hn
-//     |                     | 
-//     |_____________________|  
+//        
+//     ----------------------- ->
+//     |                     | ->
+//  φm |                     | -> hn
+//     |                     | ->
+//     |_____________________| -> 
 //         
 //
 
@@ -23,7 +20,7 @@
 lc = 0.01;
 
 // Dimensões 
-L = 1.0;
+L = 2.0;
 H = 0.1;
 
 
@@ -46,11 +43,11 @@ Plane Surface(1) = {1};
 // Material
 Physical Surface("Material,mat,1,1.0") = {1};
 
-// Boundary conditions - Open
+// Boundary conditions
 Physical Curve("φm") = {4};
 
 // Boundary conditions - hn
-Physical Curve("hn,-2.0") = {2};
+Physical Curve("hn,1.0") = {2};
 
 // Convert triangles to quads
 Recombine Surface{:};
@@ -62,4 +59,4 @@ Mesh.Algorithm = 8;
 Mesh 2;
 
 // Save the mesh
-Save "teste1.msh";
+Save "1D_hn_quad.msh";

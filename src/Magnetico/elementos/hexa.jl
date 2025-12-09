@@ -153,7 +153,7 @@ end
 # Tentativa de adaptar do bi4
 # Vetor de forças de corpo para o hex8
 #
-function Body_load_local_hexa(ρm,μ,X)
+function Body_load_local_hex8(ρm,μ,X)
 
     # Aloca o vetor 8 × 1
     Fe = zeros(8)
@@ -192,6 +192,7 @@ function Body_load_local_hexa(ρm,μ,X)
 
                 # Somatórios
                 Fe .= Fe + μ*ρm*N'*det(J)
+
             end  
         end
     end
@@ -199,7 +200,6 @@ function Body_load_local_hexa(ρm,μ,X)
     # Retorna o vetor de força de corpo
     return Fe
   
-
 end
 
 

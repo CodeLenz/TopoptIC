@@ -108,7 +108,7 @@ function Vetor_Pρm(nn,vetor_ρm,coord,connect)
       elseif et==5
         Pb = Body_load_local_hex8(valor,μ,X)
       elseif et==7
-        Pb = Body_load_local_pyr5(valor,μ,sX)
+        Pb = Body_load_local_pyr5(valor,μ,X)
       else
         error("Vetor_P!:: Tipo de elemento não definido")
       end

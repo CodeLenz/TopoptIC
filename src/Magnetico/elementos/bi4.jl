@@ -129,7 +129,7 @@ end
 #
 function Body_load_local_bi4(ρm,μ, X)
 
-    # Aloca o vetor 4 × 1 #Por que é 4x1 mesmo??
+    # Aloca o vetor 4 × 1 
     Fe = zeros(4)
   
     # Integração por quadratura de Gauss-Legendre
@@ -137,6 +137,7 @@ function Body_load_local_bi4(ρm,μ, X)
     wg = ones(2)
   
     @inbounds for i=1:2
+        
         # Ponto e peso nesta dimensão
         r = pg[i]
         wr = wg[i]

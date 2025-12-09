@@ -187,8 +187,19 @@ function Parsemsh(meshfile::String,verbose=false)
     connect2 = zeros(Int64,ne,nmax+2)
 
     # Some data are already processed
-    connect2[:,1] .= etypes
-    connect2[:,3:end] .= connect
+    connect2[:,1] .= etypes 
+
+    # Se tivermos elementos diferentes, cada um pode ter 
+    # um número diferente de nós
+    for linha=1:ne
+
+        # Número de nós do elemento
+        nn_e = length(connect[linha,:])
+
+        # Copia os nós 
+        connect2[linha,3:2+nn_e] .= connect[linha,:]
+
+    end
 
     # Materials as a matrix
     materials2 = zeros(max_id,1)
@@ -212,7 +223,6 @@ function Parsemsh(meshfile::String,verbose=false)
          
     end
     
-
     # Return processed data
     return nn, coord, ne, connect2, materials2, sort!(unique!(nodes_φm)), vector_hn, vector_ρm, centroids
 
