@@ -9,7 +9,7 @@ function Matriz_N_bi4(r,s)
     N3 = (1/4)*(1+r)*(1+s)
     N4 = (1/4)*(1-r)*(1+s)
   
-    return @SMatrix [N1 N2 N3 N4]
+    return [N1 N2 N3 N4]
   
 end
   

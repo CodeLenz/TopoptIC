@@ -14,7 +14,7 @@ function Matriz_N_hex8(r,s,t)
     N8 = (1/8)*(1-r)*(1+s)*(1+t)
   
 
-    return @SMatrix [N1 N2 N3 N4 N5 N6 N7 N8]
+    return [N1 N2 N3 N4 N5 N6 N7 N8]
   
 end
 
