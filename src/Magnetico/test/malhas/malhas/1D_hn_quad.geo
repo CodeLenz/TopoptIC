@@ -2,22 +2,17 @@
 // Domínio retangular com dimensão L x H 
 // L << H (1D)
 //
-// com  termo fonte 
+// sem termo fonte e com hn = 1 na face da direita
 // a face da esquerda tem potencial nulo prescrito
 //
 // A propriedade do material é \mu = 1 em todo o domínio
 //
-//
-// φ(x) = -ρm*x² / 2 + ρm*L*x
-// 
-// φ(0) = 0
-// φ(2) = -2ρm + 4ρm = 2ρm
 //        
-//     ----------------------- 
-//     |                     | 
-//  φm |       ρm            | 
-//     |                     | 
-//     |_____________________| 
+//     ----------------------- ->
+//     |                     | ->
+//  φm |                     | -> hn
+//     |                     | ->
+//     |_____________________| -> 
 //         
 //
 
@@ -51,8 +46,11 @@ Physical Surface("Material,mat,1,1.0") = {1};
 // Boundary conditions
 Physical Curve("φm") = {4};
 
-// Termo fonte 
-Physical Surface("ρm,1.0") = {1};
+// Boundary conditions - hn
+Physical Curve("hn,1.0") = {2};
+
+// Convert triangles to quads
+Recombine Surface{:};
 
 // Better quad algorithm
 Mesh.Algorithm = 8;
@@ -61,4 +59,4 @@ Mesh.Algorithm = 8;
 Mesh 2;
 
 // Save the mesh
-Save "1D_rhom_tri.msh";
+Save "1D_hn_quad.msh";

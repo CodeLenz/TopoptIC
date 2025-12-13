@@ -21,7 +21,7 @@ include("pos/pos_processamento.jl")
 # Calcula o campo escalar Φ e também 
 # os campos vetoriais H e B
 #
-function Analise(meshfile::String)
+function Analise(meshfile::String; output=true)
     
     # Le dados da malha
     nn, coord, ne, connect, materials, φm, vetor_hn, vetor_ρm, _ = Parsemsh(meshfile)
@@ -44,7 +44,7 @@ function Analise(meshfile::String)
     Pρm = Vetor_Pρm(nn,vetor_ρm,coord,connect)
 
     # Força total 
-    P = Phn + Pρm
+    P = Phn - Pρm
 
     # Aloca um vetor Φ com a dimensão completa
     Φ = zeros(nn)
@@ -52,21 +52,27 @@ function Analise(meshfile::String)
     # Soluciona o sistema de equações para os gls livres
     Φ[livres] .= -K[livres,livres]\P[livres]
 
-    # Abre um arquivo para escrita no gmsh
-    etypes = connect[:,1]
-    conectividades = connect[:,3:end]
-    Lgmsh_export_init("saida.pos",nn,ne,coord,etypes,conectividades)
-
-    # Grava o campo Φ
-    Lgmsh_export_nodal_scalar("saida.pos",Φ,"Campo escalar") 
-
     # Agora podemos pós-processar a solução, calculando o H e também 
     # o B no centro de cada elemento finito
     H, B =  Calcula_HB(ne,coord,connect,materials,Φ)
 
-    # Grava o campo B
-    #Lgmsh_export_element_scalar("saida.pos",B[:,1],"Bx") 
-    #Lgmsh_export_element_scalar("saida.pos",B[:,2],"By") 
+    # Abre um arquivo para escrita no gmsh
+    if output
+
+        # Abre o arquivo de saída e coloca as informações
+        # básicas
+        etypes = connect[:,1]
+        conectividades = connect[:,3:end]
+        Lgmsh_export_init("saida.pos",nn,ne,coord,etypes,conectividades)
+
+        # Grava o campo Φ
+        Lgmsh_export_nodal_scalar("saida.pos",Φ,"Campo escalar") 
+        
+        # Grava o campo h
+        Lgmsh_export_element_scalar("saida.pos",H[:,1],"Hx") 
+        Lgmsh_export_element_scalar("saida.pos",H[:,2],"Hy") 
+
+    end
 
     # Retorna os resultados
     return Φ, H, B
